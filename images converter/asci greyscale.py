@@ -1,14 +1,24 @@
 import pygame as pg
 import numpy as np
 import cv2
+from tkinter import filedialog, Tk
 
 class Converter:
-    def __init__(self, path = "img/gato2.jpg", font_size = 10):
+    def __init__(self, font_size = 10):
+        # Hide the root window
+        root = Tk()
+        root.withdraw()
+        self.path = filedialog.askopenfilename()
+        root.destroy()
+        
+        if not self.path:
+            raise ValueError("No file selected. Please select a valid file.")
+
         pg.init()
-        self.path = path
         self.image = self.get_image()
         self.RES = self.WIDTH, self.HEIGHT = self.image.shape[0], self.image.shape[1]
         self.surface = pg.display.set_mode(self.RES)
+        pg.display.set_caption(f"ASCII Color Converter - {self.path}")
         self.clock = pg.time.Clock()
 
         self.ASCII_CHARS = '.",:;!~+-xmo*#W&8@'
@@ -17,6 +27,8 @@ class Converter:
         self.font = pg.font.SysFont('Courier', font_size, bold = True)
         self.CHAR_STEP = int(font_size * 0.6)
         self.RENDERED_ASCII_CHARS = [self.font.render(char, False, 'white') for char in self.ASCII_CHARS]
+
+        self.draw()
 
     def draw_converted_image(self):
         char_indices = self.image // self.ASCII_COEFF
@@ -60,8 +72,7 @@ class Converter:
                 if event.type == pg.KEYDOWN:
                     self.save_image_cv()
             
-            self.draw()
-            pg.display.set_caption(f"{self.clock.get_fps()}")
+            
             pg.display.flip()
             self.clock.tick()
 
