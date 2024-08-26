@@ -1,36 +1,31 @@
 import pygame as pg
 import numpy as np
 import cv2
-from tkinter import filedialog
+from image_converter import ImageConverter
 
-class Converter:
+class ASCIIColorConverter(ImageConverter):
     def __init__(self, font_size = 10, color_lvl = 8):
-        self.path = filedialog.askopenfilename()
-        
-        if not self.path or not self.path.endswith(('.png', '.jpg', '.jpeg')):
-            raise ValueError("Please select a valid file.")
+        super().__init__()
 
-        pg.init()
-        self.image, self.gray_image = self.get_image()
-        self.RES = self.WIDTH, self.HEIGHT = self.image.shape[0], self.image.shape[1]
-        self.surface = pg.display.set_mode(self.RES)
         pg.display.set_caption(f"ASCII Color Converter - {self.path}")
-        self.clock = pg.time.Clock()
 
         self.COLOR_LVL = color_lvl
-
         self.ASCII_CHARS = 'ixzao*#MW&8%B@$'
         self.ASCII_COEFF = 255 // (len(self.ASCII_CHARS) - 1)
-
         self.font = pg.font.SysFont('Courier', font_size, bold = True)
         self.CHAR_STEP = int(font_size * 0.6)
         self.PALETTE, self.COLOR_COEFF = self.create_palette()
+
+        # Need to be repeated here because this type of converter needs both the color and gray image
+        self.color_image, self.gray_image = self.get_image()
+        self.RES = self.WIDTH, self.HEIGHT = self.color_image.shape[0], self.color_image.shape[1]
+        self.surface = pg.display.set_mode(self.RES)
 
         self.draw()
 
     def draw_converted_image(self):
         char_indices = self.gray_image // self.ASCII_COEFF
-        color_indices = self.image // self.COLOR_COEFF
+        color_indices = self.color_image // self.COLOR_COEFF
         
         for x in range(0, self.WIDTH, self.CHAR_STEP):
             for y in range(0, self.HEIGHT, self.CHAR_STEP):
@@ -59,32 +54,7 @@ class Converter:
         color_image = cv2.cvtColor(transposed_img, cv2.COLOR_BGR2RGB)
         gray_image = cv2.cvtColor(transposed_img, cv2.COLOR_BGR2GRAY)
         return color_image, gray_image
-    
-    def draw_cv2_image(self): # Resize the cv2 image so it fits the screen
-        resized_cv2_image = cv2.resize(self.cv2_image, (480, 720), interpolation = cv2.INTER_AREA)
-        cv2.imshow("img", resized_cv2_image)
-
-    def draw(self):
-        self.surface.fill('black')
-        self.draw_converted_image()
-        self.draw_cv2_image()
-
-    def save_image(self):
-        # Save the Pygame surface directly to an image file
-        pg.image.save(self.surface, filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG files", "*.png"), ("JPEG files", "*.jpg"), ("All files", "*.*")]))
-
-    def run(self):
-        while True:
-            for event in pg.event.get():
-                if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
-                    pg.quit()
-                    quit()
-
-                if event.type == pg.KEYDOWN and event.key == pg.K_s:
-                    self.save_image()
-
-            pg.display.flip()
-            self.clock.tick()
 
 if __name__ == "__main__":
-    Converter().run()
+    converter = ASCIIColorConverter()
+    converter.run()

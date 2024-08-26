@@ -24,6 +24,7 @@ In the folder named `video converters` you can find the files to convert video t
 * Colored pixel art using `pixel art color.py`
 
 In all converters it's possibile to select the input video and select the output path through file explorer.
+The files `image_converter.py` and `video_converter.py` are made purely for organization reasons, they are not functional in any way.
 
 IMPORTANT: When saving an entire video it's necessary to let the video play out until the end before trying to access the newly created file.
 
