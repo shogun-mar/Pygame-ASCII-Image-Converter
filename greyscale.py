@@ -1,4 +1,5 @@
 import pygame as pg
+import numpy as np
 import cv2
 
 class Converter:
@@ -28,7 +29,8 @@ class Converter:
     def get_image(self):
         self.cv2_image = cv2.imread(self.path)
         transposed_img = cv2.transpose(self.cv2_image)
-        return cv2.cvtColor(transposed_img , cv2.COLOR_BGR2GRAY)
+        image = cv2.cvtColor(transposed_img, cv2.COLOR_BGR2GRAY)
+        return image
     
     def draw_cv2_image(self): # Resize the cv2 image so it fits the screen
         resized_cv2_image = cv2.resize(self.cv2_image, (480, 720), interpolation = cv2.INTER_AREA)
@@ -43,20 +45,20 @@ class Converter:
         # Save the Pygame surface directly to an image file
         pg.image.save(self.surface, 'output/img/converted_image.png')
 
-    # def save_image_cv(self):
-    #     pygame_img = pg.surfarray.array3d(self.surface)
-    #     cv2_img = cv2.transpose(pygame_img)
-    #     cv2.imwrite('output/img/converted_image.jpg', cv2_img)
+    def save_image_cv(self):
+        pygame_img = pg.surfarray.array3d(self.surface)
+        cv2_img = cv2.transpose(pygame_img)
+        cv2.imwrite('output/img/converted_image.jpg', cv2_img)
 
     def run(self):
         while True:
             for event in pg.event.get():
-                if event.type == pg.QUIT:
+                if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                     pg.quit()
                     quit()
 
                 if event.type == pg.KEYDOWN:
-                    self.save_image()
+                    self.save_image_cv()
             
             self.draw()
             pg.display.set_caption(f"{self.clock.get_fps()}")
