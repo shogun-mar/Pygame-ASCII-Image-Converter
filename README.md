@@ -1,5 +1,5 @@
 # Pygame-ASCII-Image-Converter
-Application made with Pygame to convert images into ASCII art.
+Application made with Pygame to convert images and videos into ASCII or pixel art depending on the file selected.
 
 ## Installation
 

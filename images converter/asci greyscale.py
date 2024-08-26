@@ -1,18 +1,14 @@
 import pygame as pg
 import numpy as np
 import cv2
-from tkinter import filedialog, Tk
+from tkinter import filedialog
 
 class Converter:
     def __init__(self, font_size = 10):
-        # Hide the root window
-        root = Tk()
-        root.withdraw()
         self.path = filedialog.askopenfilename()
-        root.destroy()
         
-        if not self.path:
-            raise ValueError("No file selected. Please select a valid file.")
+        if not self.path or not self.path.endswith(('.png', '.jpg', '.jpeg')):
+            raise ValueError("Please select a valid file.")
 
         pg.init()
         self.image = self.get_image()
@@ -53,14 +49,9 @@ class Converter:
         self.draw_converted_image()
         self.draw_cv2_image()
 
-    def save_image_pg(self):
+    def save_image(self):
         # Save the Pygame surface directly to an image file
-        pg.image.save(self.surface, 'output/img/converted_image.png')
-
-    def save_image_cv(self):
-        pygame_img = pg.surfarray.array3d(self.surface)
-        cv2_img = cv2.transpose(pygame_img)
-        cv2.imwrite('output/img/converted_image.jpg', cv2_img)
+        pg.image.save(self.surface, filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG files", "*.png"), ("JPEG files", "*.jpg"), ("All files", "*.*")]))
 
     def run(self):
         while True:
@@ -70,7 +61,7 @@ class Converter:
                     quit()
 
                 if event.type == pg.KEYDOWN:
-                    self.save_image_cv()
+                    self.save_image()
             
             
             pg.display.flip()
