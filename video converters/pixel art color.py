@@ -10,9 +10,10 @@ def accelerate_conversion(image, width, height, color_coeff, step):
     array_of_values = []
     for x in range(0, width, step):
         for y in range(0, height, step):
-            color = image[x, y] // color_coeff
-            if sum(color):
-                array_of_values.append((color, (x, y)))
+            r, g, b = image[x, y] // color_coeff
+            if r + g + b:
+                array_of_values.append(((r, g, b), (x, y)))
+
     return array_of_values
 
 class Converter:
@@ -35,7 +36,27 @@ class Converter:
 
         self.rec_fps = 25#self.capture.get(cv2.CAP_PROP_FPS)
         self.record = False
-        self.recorder = cv2.VideoWriter("output/video/video.mp4", cv2.VideoWriter_fourcc("mp4v"), self.rec_fps, (self.WIDTH, self.HEIGHT))
+        self.recorder = None #Will be initialized when the user presses 'r'
+
+    def get_frame(self):
+        frame = pg.surfarray.array3d(self.surface)
+        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+        return cv2.transpose(frame)
+
+    def record_frame(self):
+        if self.record:
+            
+            if not self.recorder: 
+                path = filedialog.asksaveasfilename(defaultextension=".mp4", filetypes=[("MP4 files", "*.mp4")])
+                self.recorder = cv2.VideoWriter(path, cv2.VideoWriter_fourcc(*'mp4v'), self.rec_fps, (self.WIDTH, self.HEIGHT))
+            
+            frame = self.get_frame()
+            self.recorder.write(frame)
+            cv2.imshow("Recording", frame)
+            if cv2.waitKey(1) & 0xFF == 27:
+                self.record = False
+                self.recorder = None
+                cv2.destroyAllWindows()
 
     def draw_converted_image(self):
         self.image = self.get_image()
@@ -64,8 +85,9 @@ class Converter:
         return color_image
     
     def draw_cv2_image(self): # Resize the cv2 image so it fits the screen
-        resized_cv2_image = cv2.resize(self.cv2_image, (480, 720), interpolation = cv2.INTER_AREA)
-        cv2.imshow("img", resized_cv2_image)
+        resized_cv2_image = self.cv2_image
+        #resized_cv2_image = cv2.resize(self.cv2_image, (480, 720), interpolation = cv2.INTER_AREA)
+        cv2.imshow("Original selected video", resized_cv2_image)
 
     def draw(self):
         self.surface.fill('black')
@@ -73,6 +95,7 @@ class Converter:
         self.draw_cv2_image()
 
     def save_video(self):
+        print("Saving video disabled for now.")
         return # Disable saving for now
         save_path = filedialog.asksaveasfilename(defaultextension=".mp4", filetypes=[("MP4 files", "*.mp4")])
         
@@ -104,8 +127,12 @@ class Converter:
                     quit()
 
                 if event.type == pg.KEYDOWN:
-                    self.save_video()
+                    if event.key == pg.K_s:
+                        self.save_video()
+                    elif event.key == pg.K_r:
+                        self.record = not self.record
             
+            self.record_frame()
             self.draw()
             pg.display.flip()
             self.clock.tick()
