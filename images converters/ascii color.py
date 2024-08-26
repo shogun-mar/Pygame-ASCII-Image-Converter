@@ -73,7 +73,6 @@ class Converter:
         # Save the Pygame surface directly to an image file
         pg.image.save(self.surface, filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG files", "*.png"), ("JPEG files", "*.jpg"), ("All files", "*.*")]))
 
-
     def run(self):
         while True:
             for event in pg.event.get():
@@ -81,7 +80,7 @@ class Converter:
                     pg.quit()
                     quit()
 
-                if event.type == pg.KEYDOWN:
+                if event.type == pg.KEYDOWN and event.key == pg.K_s:
                     self.save_image()
 
             pg.display.flip()

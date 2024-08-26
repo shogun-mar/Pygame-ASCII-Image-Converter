@@ -71,7 +71,7 @@ class Converter:
                     pg.quit()
                     quit()
 
-                if event.type == pg.KEYDOWN:
+                if event.type == pg.KEYDOWN and event.key == pg.K_s:
                     self.save_image()
             
             pg.display.flip()
