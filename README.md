@@ -26,8 +26,14 @@ In the folder named `video converters` you can find the files to convert video t
 In all converters it's possibile to select the input video and select the output path through file explorer.
 The files `image_converter.py` and `video_converter.py` are made purely for organization reasons, they are not functional in any way.
 
-IMPORTANT: When saving an entire video it's necessary to let the video play out until the end before trying to access the newly created file.
+`IMPORTANT`: When saving an entire video it's necessary to let the video play out until the end before trying to access the newly created file.
 
+## Settings
+
+By modifying the `font_size` value in the init method of ASCII converters you can increase or decrease the font size of the ouput.
+By modifying the `pixel_size` value in the init method of pixel art converters you can increase or decrease the pixel size of the ouput.
+By modifying the `color_lvl` value in the init method of color converter you can increase or decrease the numbers of colors in the palette (default value 8 will produce 512 colors &rarr; formula:  $x^3$ because of the three color channels).
+ 
 ## Controls 
 
 While converting images:

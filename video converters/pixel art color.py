@@ -50,11 +50,7 @@ class ColorPixelArtConverter(VideoConverter):
         transposed_img = cv2.transpose(self.cv2_image)
         color_image = cv2.cvtColor(transposed_img, cv2.COLOR_BGR2RGB)
         return color_image
-    
-    def draw_cv2_image(self): # Resize the cv2 image so it fits the screen
-        resized_cv2_image = self.cv2_image
-        #resized_cv2_image = cv2.resize(self.cv2_image, (480, 720), interpolation = cv2.INTER_AREA)
-        cv2.imshow("Original selected video", resized_cv2_image)
 
 if __name__ == "__main__":
-    ColorPixelArtConverter().run()
+    converter = ColorPixelArtConverter()
+    converter.run()

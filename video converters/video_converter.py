@@ -2,9 +2,7 @@ import pygame as pg
 import pygame.gfxdraw
 import numpy as np
 import cv2
-from numba import njit
 from tkinter import filedialog
-
 
 class VideoConverter:
     def __init__(self) -> None:
@@ -15,9 +13,13 @@ class VideoConverter:
         
         self.capture = cv2.VideoCapture(self.path)
         pg.init()
-        self.image = self.get_image()
-        self.RES = self.WIDTH, self.HEIGHT = self.image.shape[0], self.image.shape[1]
-        self.surface = pg.display.set_mode(self.RES)
+        try:
+            self.image = self.get_image()
+            self.RES = self.WIDTH, self.HEIGHT = self.image.shape[0], self.image.shape[1]
+            self.surface = pg.display.set_mode(self.RES)
+        except AttributeError:
+            pass
+
         self.clock = pg.time.Clock()
 
         self.previous_frames = [] 
@@ -81,6 +83,9 @@ class VideoConverter:
 
         # Release everything if job is finished
         out.release()
+
+    def draw_cv2_image(self):
+        cv2.imshow("Original selected video", self.cv2_image)
 
     def pygame_surface_to_cv2_image(self, surface):
         # Convert the pygame surface to a NumPy array

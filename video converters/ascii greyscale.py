@@ -1,7 +1,5 @@
 import pygame as pg
-import numpy as np
 import cv2
-from tkinter import filedialog
 from video_converter import VideoConverter
 
 class ASCIIGreyscaleConverter(VideoConverter):
@@ -33,14 +31,7 @@ class ASCIIGreyscaleConverter(VideoConverter):
         transposed_img = cv2.transpose(self.cv2_image)
         image = cv2.cvtColor(transposed_img, cv2.COLOR_BGR2GRAY)
         return image
-    
-    def draw_cv2_image(self): # Resize the cv2 image so it fits the screen
-        resized_cv2_image = cv2.resize(self.cv2_image, (480, 720), interpolation = cv2.INTER_AREA)
-        cv2.imshow("img", resized_cv2_image)
 
 if __name__ == "__main__":
-    # Create an instance of ASCIIGreyscaleConverter
     converter = ASCIIGreyscaleConverter()
-
-    # Call the run method on the instance
     converter.run()

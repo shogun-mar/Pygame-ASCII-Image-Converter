@@ -19,9 +19,8 @@ class ImageConverter:
         
         self.clock = pg.time.Clock()
     
-    def draw_cv2_image(self): # Resize the cv2 image so it fits the screen
-        resized_cv2_image = cv2.resize(self.cv2_image, (480, 720), interpolation = cv2.INTER_AREA)
-        cv2.imshow("img", resized_cv2_image)
+    def draw_cv2_image(self):
+        cv2.imshow("img", self.cv2_image)
 
     def draw(self):
         self.surface.fill('black')
