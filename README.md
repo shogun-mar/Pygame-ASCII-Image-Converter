@@ -50,3 +50,17 @@ While converting video:
 * V &rarr; Save the video to desired path.
 * R &rarr; Start recording, file explorer will open prompting you to choose a file path.
 * ESCAPE &rarr; Stop recording and save video file to previously declared path.
+
+## Example images
+
+ASCII Greyscale:  
+![ascii greyscale example image](https://github.com/user-attachments/assets/90d58d77-bf6d-4de4-8bd5-6006b0d32f06)  
+
+ASCII Color:  
+![ascii color example image](https://github.com/user-attachments/assets/97b05314-61d1-4605-ab89-591fc949efa0)
+
+Pixel art wih color:  
+![pixel art color example image](https://github.com/user-attachments/assets/5d121849-d867-45c6-b3ac-76a9df34d674)
+
+Video ASCII Color:  
+![video](https://github.com/user-attachments/assets/da5d1e4d-e35c-439b-9365-7efdecd8dc29) 
