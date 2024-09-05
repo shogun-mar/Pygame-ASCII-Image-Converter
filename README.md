@@ -3,9 +3,13 @@ Application made with Pygame to convert images and videos into ASCII or pixel ar
 
 ## Installation
 
+Run this command:
 ```
-pip install pygame opencv-python numba numpy tkinter
+pip install -r requirements.txt
 ```
+while in the directory folder.
+
+NOTE: Python 3+ required.
 
 ## Usage
 
@@ -46,8 +50,3 @@ While converting video:
 * V &rarr; Save the video to desired path.
 * R &rarr; Start recording, file explorer will open prompting you to choose a file path.
 * ESCAPE &rarr; Stop recording and save video file to previously declared path.
-
-
-
-
-
